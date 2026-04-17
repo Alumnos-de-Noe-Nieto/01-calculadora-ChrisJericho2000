@@ -1,46 +1,31 @@
-"""
-Nivel 5: Validación de restas válidas (Análisis Semántico).
-
-Solamente 6 pares específicos de símbolos son permitidos para restar:
-IV (4), IX (9), XL (40), XC (90), CD (400), CM (900)
-
-Ejemplos válidos: IV, IX, XL, XC, CD, CM, XIV (X + IV)
-Ejemplos inválidos: IL (49), IC (99), XD (490), XM (990), VX (5), LC (50)
-"""
-
-
-def validar_restas(cadena: str) -> bool:
+def validar_restas(romano: str) -> bool:
     """
-    Valida que las restas (sustracciones) sean válidas.
-
-    Nivel 5: Análisis Semántico - Restas válidas
-
-    💡 PISTA: Para detectar una sustracción (valor actual < valor siguiente):
-    💡 PISTA: Ejemplo: "IV" → I(1) < V(5) → par "IV" está en SUSTRACCIONES_VALIDAS → True
-    💡 PISTA: Ejemplo: "IL" → I(1) < L(50) → par "IL" NO está en SUSTRACCIONES_VALIDAS → False
-    💡 PISTA: Ejemplo: "XIV" → X >= I, luego I < V → par "IV" está en SUSTRACCIONES_VALIDAS → True
-    💡 PISTA: Ejemplo: "IIX" → I repetido antes de IX → False
-
-    Args:
-        cadena (str): La cadena de números romanos validada en Niveles 1-4
-
-    Returns:
-        bool: True si todas las restas son válidas, False en caso contrario
-
-    Examples:
-        >>> validar_restas("IV")
-        True
-        >>> validar_restas("IX")
-        True
-        >>> validar_restas("IL")
-        False
-        >>> validar_restas("IC")
-        False
-        >>> validar_restas("XIV")
-        True
-        >>> validar_restas("IIX")
-        False
-        >>> validar_restas("MCMXCIV")
-        True
+    Nivel 5: Valida las 6 restas permitidas y prohíbe repeticiones 
+    del sustraendo (ej: IIV) o restas no estándar (ej: IL).
     """
-    raise NotImplementedError()
+    romano = romano.upper()
+    valores = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
+    permitidas = ['IV', 'IX', 'XL', 'XC', 'CD', 'CM']
+    
+    i = 0
+    while i < len(romano) - 1:
+        actual = romano[i]
+        siguiente = romano[i+1]
+        
+        # Detectamos si hay una resta (valor menor antes de uno mayor)
+        if valores[actual] < valores[siguiente]:
+            # REGLA 1: Solo las 6 combinaciones oficiales
+            if (actual + siguiente) not in permitidas:
+                return False
+            
+            # REGLA 2: No se puede repetir el símbolo que resta (ej: IIV es False)
+            # Si hay un carácter antes y es igual al actual, es inválido
+            if i > 0 and romano[i-1] == actual:
+                return False
+            
+            # Saltamos ambos caracteres porque ya validamos el par
+            i += 2
+        else:
+            i += 1
+            
+    return True
