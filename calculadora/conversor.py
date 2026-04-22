@@ -1,5 +1,6 @@
 from calculadora.error import ExpresionInvalida
 
+
 def romano_a_entero(romano: str) -> int:
     """
     Nivel 6: Conversión total con validaciones integradas.
@@ -11,24 +12,18 @@ def romano_a_entero(romano: str) -> int:
     v = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
     permitidas = ['IV', 'IX', 'XL', 'XC', 'CD', 'CM']
 
-    # --- ESCUDO DE VALIDACIONES INTEGRADO ---
-
-    # 1. Símbolos válidos
     for letra in romano:
         if letra not in v:
             raise ExpresionInvalida("Símbolos inválidos")
 
-    # 2. Repeticiones prohibidas (V, L, D no se repiten)
     for letra in ['V', 'L', 'D']:
         if romano.count(letra) > 1:
             raise ExpresionInvalida("Repetición inválida de V, L o D")
 
-    # 3. Repeticiones máximas (I, X, C, M máximo 3 veces seguidas)
     for letra in ['I', 'X', 'C', 'M']:
         if letra * 4 in romano:
             raise ExpresionInvalida("Repetición inválida de I, X, C o M")
 
-    # 4. Validar Restas y Orden
     i = 0
     ultimo_valor = 4000
     while i < len(romano):
@@ -38,18 +33,15 @@ def romano_a_entero(romano: str) -> int:
                 raise ExpresionInvalida("Restas prohibidas")
             if i > 0 and romano[i-1] == romano[i]:
                 raise ExpresionInvalida("Restas prohibidas")
-
             valor_actual = v[romano[i+1]] - v[romano[i]]
             i += 2
         else:
             valor_actual = v[romano[i]]
             i += 1
-
         if valor_actual > ultimo_valor:
             raise ExpresionInvalida("Orden incorrecto")
         ultimo_valor = valor_actual
 
-    # --- LÓGICA DE CONVERSIÓN ---
     total = 0
     idx = 0
     while idx < len(romano):
@@ -59,5 +51,4 @@ def romano_a_entero(romano: str) -> int:
         else:
             total += v[romano[idx]]
             idx += 1
-
     return total

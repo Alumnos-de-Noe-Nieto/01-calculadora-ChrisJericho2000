@@ -4,7 +4,7 @@ def validar_orden_descendente(cadena: str) -> bool:
     """
     valores = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
     sustracciones = {'IV', 'IX', 'XL', 'XC', 'CD', 'CM'}
-    
+
     i = 0
     while i < len(cadena):
         # Caso: Sustracción (ej: IV, CM)
