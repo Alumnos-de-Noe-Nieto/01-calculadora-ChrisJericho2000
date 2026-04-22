@@ -1,4 +1,3 @@
-import sys
 from calculadora.expresion import evaluar
 from calculadora.error import ExpresionInvalida
 
@@ -16,12 +15,12 @@ def main():
         try:
             # Pedimos la operación al usuario
             entrada = input("\nCalculadora > ")
-            
+
             # Opción para cerrar el programa
             if entrada.lower() in ['salir', 'exit', 'quit']:
                 print("¡Adiós! Gracias por usar la calculadora.")
                 break
-            
+
             # Evaluamos la expresión
             resultado = evaluar(entrada)
             print(f"Resultado: {resultado}")
